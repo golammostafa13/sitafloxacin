@@ -49,6 +49,7 @@ the PDFs and the local reader data are already in `.gitignore`.
    | `SUPABASE_SERVICE_ROLE_KEY` | from step 1 |
    | `ADMIN_EMAILS` | `mostafarmstu@gmail.com,<apu roy's email>` |
    | `ADMIN_PASSWORD` | the admin password |
+   | `READER_PASSWORD` | `Sitamax` (the shared password readers type when signing in) |
    | `SESSION_SECRET` | a new random value: `openssl rand -hex 32` |
    | `CRON_SECRET` | another random value: `openssl rand -hex 32` |
 

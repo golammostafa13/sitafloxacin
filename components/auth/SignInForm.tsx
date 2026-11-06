@@ -6,24 +6,26 @@ import { Loader2 } from "lucide-react";
 import { Field, inputClass, safeNext } from "./fields";
 
 export default function SignInForm({ next }: { next?: string }) {
-  const [error, setError] = useState("");
+  const [error, setError] = useState<{ field: string; text: string } | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
+    setError(null);
     setNotFound(false);
     setBusy(true);
-    const identifier = String(new FormData(e.currentTarget).get("identifier") ?? "");
-    const res = await fetch("/api/auth/signin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identifier }) });
+    const form = new FormData(e.currentTarget);
+    const identifier = String(form.get("identifier") ?? "");
+    const password = String(form.get("password") ?? "");
+    const res = await fetch("/api/auth/signin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identifier, password }) });
     const body = await res.json().catch(() => ({}));
     if (res.ok) {
       location.assign(safeNext(next));
       return;
     }
     setBusy(false);
-    setError(body.error ?? "Something went wrong");
+    setError({ field: body.field ?? "identifier", text: body.error ?? "Something went wrong" });
     setNotFound(!!body.notFound);
   };
 
@@ -31,8 +33,11 @@ export default function SignInForm({ next }: { next?: string }) {
 
   return (
     <form onSubmit={submit} noValidate className="grid gap-4">
-      <Field label="Email or mobile" error={error}>
-        <input name="identifier" autoComplete="username" autoFocus placeholder="you@example.com or 01XXXXXXXXX" className={inputClass(!!error)} />
+      <Field label="Email or mobile" error={error?.field === "identifier" ? error.text : ""}>
+        <input name="identifier" autoComplete="username" autoFocus placeholder="you@example.com or 01XXXXXXXXX" className={inputClass(error?.field === "identifier")} />
+      </Field>
+      <Field label="Password" error={error?.field === "password" ? error.text : ""}>
+        <input name="password" type="password" autoComplete="current-password" placeholder="Sitamax" className={inputClass(error?.field === "password")} />
       </Field>
       {notFound && (
         <Link href={signupHref} className="rounded-xl border border-mint/50 px-4 py-2.5 text-center text-sm font-semibold text-mint hover:bg-mint/10">Create an account</Link>

@@ -21,6 +21,11 @@ export function adminEmails() {
   return (process.env.ADMIN_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
 }
 
+/** Shared reader password for sign-in (READER_PASSWORD, default "Sitamax"). */
+export function checkReaderPassword(password: string) {
+  return safeEqual(password, process.env.READER_PASSWORD || "Sitamax");
+}
+
 /** True when the email is a listed admin and the password matches ADMIN_PASSWORD. */
 export function checkAdmin(email: string, password: string) {
   const expected = process.env.ADMIN_PASSWORD;
