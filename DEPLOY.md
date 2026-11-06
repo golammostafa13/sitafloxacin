@@ -73,7 +73,7 @@ and reads the database.
   3. GitHub switches off scheduled workflows after 60 days with no commits. If
      that happens, re-enable it from the Actions tab. The Vercel cron still runs.
 
-To check it worked, open the Supabase **Table Editor**, then **sage_heartbeat**:
+To check it worked, open the Supabase **Table Editor**, then **heartbeat**:
 `pinged_at` should be within the last day.
 
 ## 6. Before the demo

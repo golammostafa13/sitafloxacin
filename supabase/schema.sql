@@ -36,7 +36,7 @@ create table if not exists public.readers (
 );
 
 -- Written by the keep-alive job so the free project never looks idle.
-create table if not exists public.sage_heartbeat (
+create table if not exists public.heartbeat (
   id         integer primary key,
   pinged_at  timestamptz not null default now(),
   source     text
@@ -45,7 +45,7 @@ create table if not exists public.sage_heartbeat (
 -- Lock the tables: no public policies, so only the server (secret key) can use them.
 alter table public.articles  enable row level security;
 alter table public.readers   enable row level security;
-alter table public.sage_heartbeat enable row level security;
+alter table public.heartbeat enable row level security;
 
 -- Storage: public covers, private article PDFs.
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

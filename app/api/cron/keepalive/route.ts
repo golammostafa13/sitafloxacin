@@ -20,7 +20,7 @@ export async function GET(req: Request) {
 
   const source = req.headers.get("user-agent")?.includes("vercel-cron") ? "vercel-cron" : "external";
   const db = supabase();
-  must(await db.from("sage_heartbeat").upsert({ id: 1, pinged_at: new Date().toISOString(), source }).select(), "Heartbeat write");
+  must(await db.from("heartbeat").upsert({ id: 1, pinged_at: new Date().toISOString(), source }).select(), "Heartbeat write");
   const { count, error } = await db.from("articles").select("id", { count: "exact", head: true });
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   // touch storage too
