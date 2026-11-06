@@ -26,7 +26,7 @@ export default function QrDownload({ url, filename, label }: { url: string; file
       onClick={download}
       title={`Download QR (PNG): ${url}`}
       aria-label={`Download QR code for ${url}`}
-      className={label ? "inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm hover:bg-white/10" : "rounded-full p-2 hover:bg-white/10"}
+      className={label ? "inline-flex h-9 items-center gap-2 rounded-full border border-white/20 px-3.5 text-sm hover:bg-white/10" : "grid h-9 w-9 place-items-center rounded-full hover:bg-white/10"}
     >
       <QrCode className="h-4 w-4" />
       {label}

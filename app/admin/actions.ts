@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { checkAdmin, createSession, destroySession } from "@/lib/auth";
+import { checkAdmin, createSession, destroyReaderSession, destroySession } from "@/lib/auth";
 
 export async function login(_: string | null, form: FormData) {
   const email = String(form.get("email") ?? "");
@@ -13,5 +13,6 @@ export async function login(_: string | null, form: FormData) {
 
 export async function logout() {
   await destroySession();
-  redirect("/admin/login");
+  await destroyReaderSession();
+  redirect("/signin");
 }

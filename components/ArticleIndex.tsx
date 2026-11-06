@@ -65,7 +65,7 @@ export default function ArticleIndex({ articles }: { articles: Article[] }) {
           <button
             key={c}
             onClick={() => setFilter(c)}
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold capitalize tracking-wide transition ${filter === c ? "bg-aqua text-white shadow-[0_0_20px_rgba(31,181,165,.6)]" : "glass text-white/75 hover:text-white"}`}
+            className={`rounded-full px-4 py-2.5 text-xs font-semibold capitalize tracking-wide transition sm:py-1.5 ${filter === c ? "bg-aqua text-white shadow-[0_0_20px_rgba(31,181,165,.6)]" : "glass text-white/75 hover:text-white"}`}
           >
             {c}
           </button>

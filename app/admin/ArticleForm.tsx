@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Loader2, Plus, Save } from "lucide-react";
 import type { Article } from "@/lib/types";
 
 const input = "w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 outline-none focus:border-mint";
@@ -81,11 +82,11 @@ export default function ArticleForm({ article }: { article?: Article }) {
     <form onSubmit={submit} className="grid gap-8 md:grid-cols-[240px_1fr]">
       <div>
         <Field label="Cover image (high resolution)">
-          <div className="relative mb-3 aspect-[640/900] overflow-hidden rounded-xl border border-dashed border-white/25 bg-white/5">
+          <div className="relative mb-3 aspect-[640/900] w-36 overflow-hidden md:w-full rounded-xl border border-dashed border-white/25 bg-white/5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {preview ? <img src={preview} alt="" className="h-full w-full object-cover" /> : <span className="grid h-full place-items-center text-xs text-white/40">No cover</span>}
           </div>
-          <input type="file" name="cover" accept="image/webp,image/png,image/jpeg,image/avif" onChange={(e) => { const f = e.target.files?.[0]; if (f) setPreview(URL.createObjectURL(f)); }} className="text-xs text-white/70 file:mr-3 file:rounded-full file:border-0 file:bg-white/15 file:px-3 file:py-1.5 file:text-white" />
+          <input type="file" name="cover" accept="image/webp,image/png,image/jpeg,image/avif" onChange={(e) => { const f = e.target.files?.[0]; if (f) setPreview(URL.createObjectURL(f)); }} className="w-full max-w-full text-xs text-white/70 file:mr-3 file:rounded-full file:border-0 file:bg-white/15 file:px-3 file:py-1.5 file:text-white" />
         </Field>
       </div>
 
@@ -104,16 +105,17 @@ export default function ArticleForm({ article }: { article?: Article }) {
         <Field label={article?.file ? `Replace PDF (current: ${article.sizeMb} MB)` : "Article PDF"} className="sm:col-span-2">
           <input type="file" name="pdf" accept="application/pdf" className="text-sm text-white/70 file:mr-3 file:rounded-full file:border-0 file:bg-white/15 file:px-3 file:py-1.5 file:text-white" />
         </Field>
-        <label className="flex items-center gap-3 text-sm sm:col-span-2">
-          <input type="checkbox" name="published" defaultChecked={article?.published ?? true} className="h-4 w-4 accent-[#1fb5a5]" /> Published
+        <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:col-span-2">
+          <input type="checkbox" name="published" defaultChecked={article?.published ?? true} className="h-5 w-5 accent-[#1fb5a5]" /> Published (visible to readers)
         </label>
 
         {error && <p className="text-sm text-signal sm:col-span-2">{error}</p>}
-        <div className="flex items-center gap-4 sm:col-span-2">
-          <button disabled={progress !== null} className="rounded-full bg-mint px-8 py-3 font-display font-extrabold italic text-abyss hover:bg-white disabled:opacity-60">
+        <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:gap-4">
+          <button disabled={progress !== null} className="flex items-center justify-center gap-2 rounded-full bg-mint px-8 py-3 font-display font-extrabold italic text-abyss hover:bg-white disabled:opacity-60">
+            {progress !== null ? <Loader2 className="h-4 w-4 animate-spin" /> : article ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
             {progress !== null ? `Uploading ${progress}%` : article ? "Save changes" : "Create article"}
           </button>
-          {progress !== null && <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10"><div className="h-full bg-mint transition-all" style={{ width: `${progress}%` }} /></div>}
+          {progress !== null && <div className="h-1.5 w-full flex-1 sm:w-auto overflow-hidden rounded-full bg-white/10"><div className="h-full bg-mint transition-all" style={{ width: `${progress}%` }} /></div>}
         </div>
       </div>
     </form>

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { destroyReaderSession } from "@/lib/auth";
+import { destroyReaderSession, destroySession } from "@/lib/auth";
 
 export async function POST(req: Request) {
   await destroyReaderSession();
-  return NextResponse.redirect(new URL("/", req.url), { status: 303 });
+  await destroySession();
+  return NextResponse.redirect(new URL("/signin", req.url), { status: 303 });
 }

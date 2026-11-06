@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
-import { isKnownBrowser, readerId } from "@/lib/auth";
+import { canRead, isKnownBrowser } from "@/lib/auth";
 
 /**
- * Where a scanned QR code lands: signed in → `dest`; this browser has an
+ * Where a scanned QR code lands: signed in (reader or admin) → `dest`; this browser has an
  * account → Sign in; otherwise → Sign up. Both forms return to `dest` after.
  */
 export async function openRedirect(req: Request, dest: string) {
   const back = dest === "/" ? "" : `?next=${encodeURIComponent(dest)}`;
-  const to = (await readerId()) ? dest : (await isKnownBrowser()) ? `/signin${back}` : `/signup${back}`;
+  const to = (await canRead()) ? dest : (await isKnownBrowser()) ? `/signin${back}` : `/signup${back}`;
   return NextResponse.redirect(new URL(to, req.url), { status: 307 });
 }
 

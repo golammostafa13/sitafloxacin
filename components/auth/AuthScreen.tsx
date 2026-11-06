@@ -28,7 +28,7 @@ export default function AuthScreen({ title, children, wide, hideBody }: { title:
           <Link href="/" className="mb-6 inline-block font-display text-lg font-black italic">
             SAGE <span className="text-mint">MANUAL</span>
           </Link>
-          <div className="glass rounded-3xl p-6 shadow-[0_40px_120px_-30px_rgba(0,0,0,.9)] sm:p-8">
+          <div className="glass rounded-3xl p-6 max-sm:bg-abyss/80! shadow-[0_40px_120px_-30px_rgba(0,0,0,.9)] sm:p-8">
             <SplitText as="h1" text={title} wordClassName="text-chrome" className="mb-6 block font-display text-4xl font-black italic leading-none sm:text-5xl" />
             {children}
           </div>

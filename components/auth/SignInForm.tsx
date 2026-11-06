@@ -21,7 +21,7 @@ export default function SignInForm({ next }: { next?: string }) {
     const res = await fetch("/api/auth/signin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identifier, password }) });
     const body = await res.json().catch(() => ({}));
     if (res.ok) {
-      location.assign(safeNext(next));
+      location.assign(body.admin && !next ? "/admin" : safeNext(next));
       return;
     }
     setBusy(false);
