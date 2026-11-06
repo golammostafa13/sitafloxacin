@@ -1,0 +1,24 @@
+# Backup keep-alive for the free Supabase project (the main one is Vercel Cron).
+# Needs two repository secrets: SITE_URL (e.g. https://sage-manual.vercel.app) and CRON_SECRET.
+# Note: GitHub turns off scheduled workflows after 60 days with no repository activity;
+# re-enable it from the Actions tab if that happens.
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: "41 6 */2 * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping keep-alive endpoint
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          status=$(curl -sS -o response.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${CRON_SECRET}" "${SITE_URL%/}/api/cron/keepalive")
+          cat response.json; echo
+          test "$status" = "200"
