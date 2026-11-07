@@ -64,7 +64,9 @@ export async function isAdmin() {
 
 const READER = "sm_session";
 const KNOWN = "sm_known"; // remembers this browser has an account, so the QR goes to Sign in
-const READER_AGE = 60 * 60 * 24 * 30;
+// Readers stay signed in until they sign out: 400 days is the longest a browser
+// keeps a cookie, and each read renews it (refreshReaderSession).
+const READER_AGE = 60 * 60 * 24 * 400;
 
 export async function createReaderSession(id: string) {
   const exp = Date.now() + READER_AGE * 1000;
@@ -73,6 +75,12 @@ export async function createReaderSession(id: string) {
   const opts = { httpOnly: true, sameSite: "lax" as const, path: "/", secure: process.env.NODE_ENV === "production" };
   jar.set(READER, `${value}.${sign(value)}`, { ...opts, maxAge: READER_AGE });
   jar.set(KNOWN, "1", { ...opts, maxAge: 60 * 60 * 24 * 400 });
+}
+
+/** Renews the signed-in reader's session to a full READER_AGE, so active readers never expire. */
+export async function refreshReaderSession() {
+  const id = await readerId();
+  if (id) await createReaderSession(id);
 }
 
 export async function destroyReaderSession() {

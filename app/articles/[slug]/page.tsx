@@ -9,6 +9,7 @@ import Scene from "@/components/Scene";
 import Lens from "@/components/Lens";
 import Reveal from "@/components/Reveal";
 import SiteHeader from "@/components/SiteHeader";
+import OpenBookCover from "@/components/OpenBookCover";
 import SponsorSparkle from "@/components/SponsorSparkle";
 import SponsorFooter from "@/components/SponsorFooter";
 import ReadButton from "@/components/ReadButton";
@@ -59,6 +60,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <Lens src={look.lens} className={`absolute -top-14 w-36 sm:w-44 ${coverLeft ? "-right-16" : "-left-16"}`} />
             <div className="absolute -inset-10 rounded-full blur-3xl" style={{ background: `${look.glow}55` }} />
             <div className="[perspective:1200px]">
+              <OpenBookCover label={`Read ${article.title}`}>
               <Image
                 src={article.cover}
                 alt={article.title}
@@ -68,6 +70,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 sizes="(max-width:640px) 64vw, 320px"
                 className={`relative rounded-lg shadow-[0_60px_120px_-25px_rgba(0,0,0,.95)] ring-1 ring-white/25 transition duration-700 ${coverLeft ? "[transform:rotateY(16deg)_rotateX(4deg)]" : "[transform:rotateY(-16deg)_rotateX(4deg)]"} hover:[transform:none]`}
               />
+              </OpenBookCover>
             </div>
           </Reveal>
 
